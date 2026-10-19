@@ -29,3 +29,6 @@ docker ps
 
 <!-- to check logs of container -->
 docker logs <container id>
+
+<!-- start docker container  -->
+docker start mysql-container
