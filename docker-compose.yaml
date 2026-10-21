@@ -22,7 +22,7 @@ services:
     container_name: backend
     build:
       context: backend/
-    image: backend
+    image: backend-image
     restart: always
     ports:
       - "3500:3500"
