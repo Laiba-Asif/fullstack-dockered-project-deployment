@@ -1,10 +1,8 @@
-FROM mysql:latest
+FROM mysql:8.0
 
 ENV MYSQL_ROOT_PASSWORD=mysql123
-ENV MYSQKL_DATABASE=school
+ENV MYSQL_DATABASE=school
 
-EXPOSE 3360
+EXPOSE 3306
 
 VOLUME /var/lib/mysql
-
-CMD ["mysqld"]
