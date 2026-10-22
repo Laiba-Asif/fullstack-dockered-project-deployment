@@ -55,7 +55,7 @@ const ensureTables = async (db) => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-
+      console.log('DB host is:', process.env.host);
     console.log("✅ Tables ensured successfully (student, teacher)");
   } catch (error) {
     console.error("❌ Error ensuring tables:", error);

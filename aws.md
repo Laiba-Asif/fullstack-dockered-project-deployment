@@ -10,5 +10,7 @@ steps
 
 4. Create ECR with no scanning for frontend and backend
 
+5. Go to ECS clusters and create cluster and choose fargate only clusters
+
 db pass = 7RXpfRcPuJV0U6dPdjKk
 db endpoint = ecs-database-1.c7gegeg6i714.ap-south-1.rds.amazonaws.com
