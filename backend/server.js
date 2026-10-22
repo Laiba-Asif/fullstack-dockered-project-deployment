@@ -14,7 +14,18 @@ let db;
 const connectWithRetry = async (retries = 10, delay = 3000) => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const pool = await mysql.createPool({
+      // Part 1: create the database if it does not exist
+      const admin = await mysql.createConnection({
+        host: process.env.host,
+        user: process.env.user,
+        password: process.env.password,
+        ssl: { rejectUnauthorized: false }
+      });
+      await admin.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.database}\``);
+      await admin.end();
+
+      // Part 2: connect to that database
+      const pool = mysql.createPool({
         host: process.env.host,
         user: process.env.user,
         password: process.env.password,
@@ -22,7 +33,7 @@ const connectWithRetry = async (retries = 10, delay = 3000) => {
         connectionLimit: 10,
         ssl: { rejectUnauthorized: false }
       });
-      console.log('DB host is:', process.env.host);
+      await pool.query('SELECT 1');
       console.log(`✅ Connected to MySQL (Attempt ${attempt})`);
       return pool;
     } catch (error) {
@@ -33,6 +44,28 @@ const connectWithRetry = async (retries = 10, delay = 3000) => {
     }
   }
 };
+// const connectWithRetry = async (retries = 10, delay = 3000) => {
+//   for (let attempt = 1; attempt <= retries; attempt++) {
+//     try {
+//       const pool = await mysql.createPool({
+//         host: process.env.host,
+//         user: process.env.user,
+//         password: process.env.password,
+//         database: process.env.database,
+//         connectionLimit: 10,
+//         ssl: { rejectUnauthorized: false }
+//       });
+//       console.log('DB host is:', process.env.host);
+//       console.log(`✅ Connected to MySQL (Attempt ${attempt})`);
+//       return pool;
+//     } catch (error) {
+//       console.error(`❌ MySQL connection failed (Attempt ${attempt}/${retries}):`, error.message);
+//       if (attempt === retries) throw error;
+//       console.log(`Retrying in ${delay / 1000}s...`);
+//       await new Promise(res => setTimeout(res, delay));
+//     }
+//   }
+// };
 
 // 🧱 Ensure Required Tables Exist
 const ensureTables = async (db) => {
