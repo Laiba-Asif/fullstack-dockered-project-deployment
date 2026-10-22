@@ -22,6 +22,7 @@ const connectWithRetry = async (retries = 10, delay = 3000) => {
         connectionLimit: 10,
         ssl: { rejectUnauthorized: false }
       });
+      console.log('DB host is:', process.env.host);
       console.log(`✅ Connected to MySQL (Attempt ${attempt})`);
       return pool;
     } catch (error) {
